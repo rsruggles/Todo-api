@@ -16,7 +16,16 @@ app.get('/', function (req, res) {
 
 // GET /todos
 app.get('/todos', function (req, res) {
-  res.json(todos);
+  var qParam = req.query;
+  var filteredTodos = todos;
+  
+  if (qParam.hasOwnProperty('completed') && qParam.completed === 'true') {
+    filteredTodos = _.where(filteredTodos, {completed: true});
+  } else if (qParam.hasOwnProperty('completed') && qParam.completed === 'false') {
+    filteredTodos = _.where(filteredTodos, {completed: false});
+  }
+  
+  res.json(filteredTodos);
 });
 
 // GET /todos/:id
